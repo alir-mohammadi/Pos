@@ -15,5 +15,8 @@ Route::get('/', function () {
     $hoom=['welcome','to','laravel'];
    return view('about',['hoom'=>$hoom]);
 });
-Route::post('custom/add','CustomController@Add');
-Route::get('custom/add/show','CustomController@AddShow');
+Route::prefix('customer')->group(function () {
+
+    Route::post('/add', 'CustomController@Add');
+    Route::get('/add/show', 'CustomController@AddShow');
+});

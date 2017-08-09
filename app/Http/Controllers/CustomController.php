@@ -26,6 +26,7 @@ class CustomController extends Controller
 
     public function AddShow()
     {
+        return 'ok';
         return view('AddCustom');
     }
 
