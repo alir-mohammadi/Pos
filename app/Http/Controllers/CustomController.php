@@ -78,7 +78,7 @@ class CustomController extends Controller
             }
             $PayKind=0;
             if($request->Cash==1)
-                $payKind+=1;
+                $PayKind+=1;
             if($request->Check==1)
                 $PayKind+=10;
             if($request->Credit==1)
@@ -95,7 +95,7 @@ class CustomController extends Controller
         }
     }
 
-    public function AddShow()
+    public function ShowPage()
     {
         return view('customer');
     }
