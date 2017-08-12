@@ -46,9 +46,9 @@ class StoreController extends Controller
         {
             foreach ($query as $Q)
             {
-                $q->where($Q['Name'],Q['Value']);
+                $q->where($Q['Name'],$Q['Value']);
             }
-        })->get());
+        })->value());
 
 
     }
