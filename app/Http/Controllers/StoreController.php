@@ -28,18 +28,19 @@ class StoreController extends Controller
     }
     public function Search (Request $request)
     {
+
         $query='';
         if (!empty($request->Name))
         {
-            $query.="['WoodName','=',$request->Name]";
+            $query.="['WoodName','=',$request->Name,]";
         }
         if (!empty($request->Code))
         {
-            if (!empty($query))
-                $query.=',';
+//            if (!empty($query))
+//                $query.=',';
             $query.="['WoodCode','=',$request->Code]";
         }
-        dd(Wood::where(["$query"])->get);
+        dd(Wood::where(["$query"])->get());
 
 
     }
