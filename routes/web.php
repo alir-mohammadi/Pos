@@ -11,6 +11,17 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::prefix('/')->group(function ()
+{
+    Route::get('','HomeController@ShowPage');
+});
+Route::prefix('customer')->group(function ()
+{
+   Route::put('','CustomController@Add');
+   Route::get('','CustomController@ShowPage');
+});
+Route::prefix('store')->group(function ()
+{
+   Route::put('','StoreController@Add');
+   Route::get('','StoreController@ShowPage');
 });
