@@ -24,4 +24,5 @@ Route::prefix('store')->group(function ()
 {
    Route::put('','StoreController@Add');
    Route::get('','StoreController@ShowPage');
+   Route::get('/search','StoreController@Search');
 });
