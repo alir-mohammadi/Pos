@@ -9,3 +9,21 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+<<<<<<< HEAD
+.env
+public/.htaccess
+public/.htaccess
+*.css
+*.css
+*.svg
+*.map
+*.eot
+*.woff
+*.ttf
+*.js
+*.vue
+*.scss
+*.sass
+resources/views/vendor/mail/html/table.blade.php
+=======
+>>>>>>> 1b3c9303aec1ab85ab45a95acd435fe4907610fd
