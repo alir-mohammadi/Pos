@@ -29,6 +29,9 @@ class StoreController extends Controller
     public function Search (Request $request)
     {
 
+
+        $query[0]['Name']='WoodCode';
+        $query[0]['Value']='-1';
         if (!empty($request->Name))
         {
             $query[0]['Name']='WoodName';
@@ -37,18 +40,27 @@ class StoreController extends Controller
         }
         if (!empty($request->Code))
         {
+            if(empty($query))
+              {
+                $size=0;
+              }
+              else {
 
-            $query[sizeof($query)]['Name']='WoodCode';
-            $query[sizeof($query)]['Value']=$request->Code;
+                  $size = sizeof($query);
+              }
+            $query[$size]['Name']='WoodCode';
+            $query[$size]['Value']=$request->Code;
 
         }
+
         dd(Wood::where(function ($q) use ($query)
         {
-            foreach ($query as $Q)
+            foreach ($query AS $Q)
             {
                 $q->where($Q['Name'],$Q['Value']);
             }
         })->value());
+
 
 
     }
