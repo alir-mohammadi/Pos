@@ -18,7 +18,7 @@ class StoreController extends Controller
 
     public function AddCustomer ()
     {
-        //search seda 
+        //search seda zade mishe va
         
     }
 
