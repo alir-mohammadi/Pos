@@ -1,0 +1,125 @@
+/******************** Fonts *************************/
+@font-face {
+  font-family: 'IRAN-Sans';
+  src: url("../../font/IRANSans/IRAN-Sans.eot?v=4.6.2");
+  src: url("../../font/IRANSans/IRAN-Sans.eot?#iefix&v=4.6.2") format("embedded-opentype"), url("../../font/IRANSans/IRAN-Sans.woff?v=4.6.2") format("woff"), url("../../font/IRANSans/IRAN-Sans.ttf?v=4.6.2") format("truetype"), url("../../font/IRANSans/IRAN-Sans.svg?v=4.6.2#fontawesomeregular") format("svg");
+  font-weight: normal;
+  font-style: normal; }
+/******* Defaults *******/
+html, body {
+  font-family: IRAN-Sans;
+  background-color: #e8e8e8; }
+
+/****** Side Nav *******/
+.sidenav {
+  height: 100%;
+  /* 100% Full-height */
+  width: 120px;
+  /* 0 width - change this with JavaScript */
+  position: fixed;
+  /* Stay in place */
+  z-index: 1;
+  /* Stay on top */
+  top: 0;
+  right: 0;
+  background-color: #fff;
+  /* White*/
+  overflow-x: hidden;
+  /* Disable horizontal scroll */
+  transition: 0.5s;
+  /* 0.5 second transition effect to slide in the sidenav */ }
+  .sidenav a:first-child {
+    margin-top: 5%; }
+  .sidenav a {
+    text-decoration: none;
+    font-size: 25px;
+    color: #200624;
+    display: block;
+    transition: 0.3s;
+    height: 12%;
+    padding: 10%; }
+    .sidenav a .menu-item-image {
+      width: auto;
+      height: 45%; }
+  .sidenav a:hover svg > g {
+    fill: #fff; }
+  .sidenav a:hover div {
+    color: #fff; }
+  .sidenav .home .svg {
+    fill: #200624; }
+  .sidenav .home div {
+    color: #200624; }
+  .sidenav .home:hover {
+    background-color: #200624; }
+  .sidenav .cash-desk .svg {
+    fill: #9fc00e; }
+  .sidenav .cash-desk div {
+    color: #9fc00e; }
+  .sidenav .cash-desk:hover {
+    background-color: #9fc00e; }
+  .sidenav .warehouse .svg {
+    fill: #AE2C2B; }
+  .sidenav .warehouse div {
+    color: #AE2C2B; }
+  .sidenav .warehouse:hover {
+    background-color: #AE2C2B; }
+  .sidenav .abacus .svg {
+    fill: #5f91ff; }
+  .sidenav .abacus div {
+    color: #5f91ff; }
+  .sidenav .abacus:hover {
+    background-color: #5f91ff; }
+  .sidenav .report .svg {
+    fill: #f3b557; }
+  .sidenav .report div {
+    color: #f3b557; }
+  .sidenav .report:hover {
+    background-color: #f3b557; }
+  .sidenav .manage .svg {
+    fill: #9674ff; }
+  .sidenav .manage div {
+    color: #9674ff; }
+  .sidenav .manage:hover {
+    background-color: #9674ff; }
+  .sidenav .customer .svg {
+    fill: #03a696; }
+  .sidenav .customer div {
+    color: #03a696; }
+  .sidenav .customer:hover {
+    background-color: #03a696; }
+  .sidenav .settings .svg {
+    fill: #7B8181; }
+  .sidenav .settings div {
+    color: #7B8181; }
+  .sidenav .settings:hover {
+    background-color: #7B8181; }
+
+/* Position and style the close button (top right corner) */
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px; }
+
+/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+#main {
+  margin-right: 180px;
+  /*transition: margin-left .5s;*/
+  padding: 0px; }
+
+#main .nav {
+  background-color: #200625; }
+
+#main .tab-content {
+  padding: 0 20px; }
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+  .sidenav {
+    padding-top: 15px; }
+
+  .sidenav a {
+    font-size: 18px; } }
+
+/*# sourceMappingURL=style.css.map */

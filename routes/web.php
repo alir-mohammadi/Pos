@@ -12,8 +12,5 @@
 */
 
 Route::get('/', function () {
-   $hoom=['welcome','to','laravel'];
-  return view('home');
+    return view('welcome');
 });
-Route::post('customer/add','CustomController@Add');
-Route::get('customer','CustomController@AddShow');
