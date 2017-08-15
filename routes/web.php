@@ -19,10 +19,17 @@ Route::prefix('customer')->group(function ()
 {
    Route::put('','CustomController@Add');
    Route::get('','CustomController@ShowPage');
+   Route::post('/search','CustomController@Search');
+
+});
+Route::get('/test',function ()
+{
+    return view('test');
 });
 Route::prefix('store')->group(function ()
 {
    Route::put('','StoreController@Add');
    Route::get('','StoreController@ShowPage');
-   Route::get('/search','StoreController@Search');
+   Route::post('/search','StoreController@Search');
+   Route::post('/print','StoreController@MakeBill');
 });
