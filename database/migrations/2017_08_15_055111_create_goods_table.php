@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateWoodsTable extends Migration
+class CreateGoodsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateWoodsTable extends Migration
      */
     public function up()
     {
-        Schema::create('woods', function (Blueprint $table) {
+        Schema::create('goods', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
         });
@@ -26,6 +26,6 @@ class CreateWoodsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('woods');
+        Schema::dropIfExists('goods');
     }
 }

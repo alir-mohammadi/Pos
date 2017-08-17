@@ -1,4 +1,10 @@
 {
-    "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css"
+  "/js/app.js": "/js/app.js",
+  "/css/app.css": "/css/app.css",
+  "/custom/home/style.css": "/custom/home/style.css",
+  "/custom/customer/style.css": "/custom/customer/style.css",
+  "/css/custom/home/style.css": "/css/custom/home/style.css",
+  "/css/custom/customer/style.css": "/css/custom/customer/style.css",
+  "/mix.js": "/mix.js",
+  "/css/custom/components/radioButton.css": "/css/custom/components/radioButton.css"
 }
