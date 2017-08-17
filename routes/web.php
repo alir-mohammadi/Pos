@@ -22,7 +22,20 @@ Route::prefix('customer')->group(function ()
 });
 Route::prefix('store')->group(function ()
 {
-   Route::put('','StoreController@Add');
+   Route::put('','StoreController@AddToJar');
+   Route::put('','StoreController@EditJar');
+   Route::delete('','StoreController@DeleteJar');
+   Route::put('','StoreController@ReturnWood');
+   Route::put('','StoreController@AddCustomer');
+   Route::put('','StoreController@Pay');
+   Route::put('','StoreController@MakeBill');
+   Route::put('','StoreController@PrintBill');
+   Route::put('','StoreController@CustomerScreen');
    Route::get('','StoreController@ShowPage');
    Route::get('/search','StoreController@Search');
+
+});
+Route ::prefix('warehouse')->group(function()
+{
+  Route::put('','WareHouseController@AddGoofs');
 });
