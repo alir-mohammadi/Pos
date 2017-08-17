@@ -99,4 +99,117 @@ class CustomController extends Controller
     {
         return view('customer');
     }
+
+    public function Search (Request $request)
+    {
+
+        $query[0]['Name']='CusCode';
+        $query[0]['Value']='-1';
+        if (!empty($request->Name))
+        {
+            $query[0]['Name']='CusName';
+            $query[0]['Value']='%'.$request->Name.'%';
+            $query[0]['Operation']='like';
+
+        }
+        if (!empty($request->Code))
+        {
+            if(empty($query))
+            {
+                $size=0;
+            }
+            else {
+
+                $size = sizeof($query);
+            }
+            $query[$size]['Name']='CusCode';
+            $query[$size]['Value']=$request->Code;
+            $query[$size]['Operation']='=';
+        } if (!empty($request->Family))
+        {
+            if(empty($query))
+            {
+                $size=0;
+            }
+            else {
+
+                $size = sizeof($query);
+            }
+            $query[$size]['Name']='CusFamily';
+            $query[$size]['Value']='%'.$request->Family.'%';
+            $query[$size]['Operation']='like';
+        } if (!empty($request->FatherName))
+        {
+            if(empty($query))
+            {
+                $size=0;
+            }
+            else {
+
+                $size = sizeof($query);
+            }
+            $query[$size]['Name']='CusFatherName';
+            $query[$size]['Value']='%'.$request->FatherName.'%';
+            $query[$size]['Operation']='like';
+        } if (!empty($request->Point))
+        {
+            if(empty($query))
+            {
+                $size=0;
+            }
+            else {
+
+                $size = sizeof($query);
+            }
+            $query[$size]['Name']='CusPoint';
+            $query[$size]['Value']=$request->Point;
+            $query[$size]['Operation']='=';
+        } if (!empty($request->Status))
+        {
+            if(empty($query))
+            {
+                $size=0;
+            }
+            else {
+
+                $size = sizeof($query);
+            }
+            $query[$size]['Name']='CusStatus';
+            $query[$size]['Value']=$request->Status;
+            $query[$size]['Operation']='=';
+        }
+         if (!empty($request->Kind))
+        {
+            if(empty($query))
+            {
+                $size=0;
+            }
+            else {
+
+                $size = sizeof($query);
+            }
+            $query[$size]['Name']='CusKind';
+            $query[$size]['Value']=$request->Kind;
+            $query[$size]['Operation']='=';
+        }
+
+            $payKindQuery[0]['Name']='CusPayKind';
+            $payKindQuery[0]['Value']=0;
+            $payKindQuery[0]['Operation']='=';
+
+        if (!empty($request->Cash))
+        {
+            $payKindQuery[0]['Value']+=1;
+        }if (!empty($request->Check))
+        {
+            $payKindQuery[0]['Value']+=100;
+
+        }if (!empty($request->Credit))
+        {
+            $payKindQuery[0]['Value']+=10;
+        }
+
+        dd($payKindQuery);
+
+    }
 }
