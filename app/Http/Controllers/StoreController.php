@@ -2,31 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\Store\Sell\AddEvent;
 use Illuminate\Support\Facades\App;
 use PDF;
 use Illuminate\Http\Request;
 use App\Goods;
+use Debugbar;
 
 class StoreController extends Controller
 {
+
     public function ReturnGoods ()
     {
-        $goods= Goods::select('GoodsId','GoodsName','GoodsPrice','GoodsDiscount','GoodsNumber','GoodsImage')->get();
+        $goods = Goods::select('GoodsId', 'GoodsName', 'GoodsPrice', 'GoodsDiscount', 'GoodsNumber', 'GoodsImage')->get();
+
         foreach ($goods as $data)
         {
-            if(empty($Response))
+            if (empty($Response))
             {
-                $Size=0;
+                $Size = 0;
             }
             else
-                $Size=sizeof($Response);
-            $Response[$Size]['Id'] = $data->GoodsId;
-            $Response[$Size]['Name'] = $data->GoodsName;
-            $Response[$Size]['Price'] =$data-> GoodsPrice;
-            $Response[$Size]['Discount'] =$data->GoodsDiscount;
-            $Response[$Size]['Number'] = $data->GoodsNumber;
-            $Response[$Size]['Image'] = $data->GoodsImage;
+            {
+                $Size = sizeof($Response);
+            }
+            $Response[ $Size ][ 'Id' ] = $data->GoodsId;
+            $Response[ $Size ][ 'Name' ] = $data->GoodsName;
+            $Response[ $Size ][ 'Price' ] = $data->GoodsPrice;
+            $Response[ $Size ][ 'Discount' ] = $data->GoodsDiscount;
+            $Response[ $Size ][ 'Number' ] = $data->GoodsNumber;
+            $Response[ $Size ][ 'Image' ] = $data->GoodsImage;
         }
+
+//        $Response['FactorNumber']=
         return $Response;
     }
 
@@ -105,8 +113,6 @@ class StoreController extends Controller
         {
 
 
-            $response = json_encode($response);
-
             return $response;
         }
         else
@@ -119,84 +125,111 @@ class StoreController extends Controller
 
     public function EditJar (Request $request)
     {
-        $Edit=Goods::Where('GoodsId','=',$request->EditGoods->Id)->select('GoodsNumber')->get();
-        $number=0;
-        foreach ($request->JarGoods as $jargoods )
+        $EditNumber = Goods::Where('GoodsId', '=', $request->EditGoods[ 'Id' ])->value('GoodsNumber');
+        Debugbar::info($request->all());
+        $number = 0;
+        foreach ($request->JarGoods as $jargoods)
         {
-            if($jargoods->Id==$request->EditGoods->Id)
+            if ($jargoods[ 'Id' ] == $request->EditGoods[ 'Id' ])
             {
-                $number=$jargoods->Number;
+                $number = $jargoods[ 'Number' ];
             }
         }
-        if($number>=$request->EditGoods->Number)
+        if ($number >= $request->EditGoods[ 'Number' ])
         {
-            $final = $number-$request->EditGoods->Number;
-            Goods::where('GoodsId','=',$request->EditGoods->Id)->increment('GoodsNumber',$final);
+            $final = $number - $request->EditGoods[ 'Number' ];
+            Goods::where('GoodsId', '=', $request->EditGoods[ 'Id' ])->increment('GoodsNumber', $final);
         }
-        if($number < $request->EditGoods->Number) {
-            $final = $request->EditGoods->Number - $number;
-            if ($final >= $Edit->Number)
+        if ($number < $request->EditGoods[ 'Number' ])
+        {
+            $final = $request->EditGoods[ 'Number' ] - $number;
+            Debugbar::info($final);
+            if ($final <= $EditNumber)
             {
-                Goods::where('GoodsId', '=', $request->EditGoods->Id)->descrement('GoodsNumber', $request->EditGoods->Number);
+                Goods::where('GoodsId', '=', $request->EditGoods[ 'Id' ])->decrement('GoodsNumber', $final);
             }
             else
             {
-                return view("error");
+//                return view("error");
             }
         }
         foreach ($request->JarGoods as $data)
         {
-            if(empty($Response))
+            if (empty($Response))
             {
-                $Size=0;
+                $Size = 0;
             }
             else
             {
                 $Size = sizeof($Response);
             }
-            $Response[$Size]['Id'] = $data->GoodsId;
-            $Response[$Size]['Name'] = $data->GoodsName;
-            $Response[$Size]['Price'] = $data->GoodsPrice;
-            $Response[$Size]['Discount'] = $data->GoodsDiscount;
-            if($request->jarGoods->Id != $request->EditGoods->Id)
+
+//            $Response[ $Size ][ 'Discount' ] = $data['Discount'];
+
+            if ($data[ 'Id' ] != $request->EditGoods[ 'Id' ])
             {
-                $Response[$Size]['Number'] = $data->GoodsNumber;
+                $Response[ 'JarGoods' ][ $Size ][ 'Id' ] = $data[ 'Id' ];
+                $Response[ 'JarGoods' ][ $Size ][ 'Name' ] = $data[ 'Name' ];
+                $Response[ 'JarGoods' ][ $Size ][ 'Price' ] = $data[ 'Price' ];
+                $Response[ 'JarGoods' ][ $Size ][ 'Number' ] = $data[ 'Number' ];
             }
             else
             {
-                $Response[$Size]['Number'] = $request->EditeGoods->Number;
+                if ($request->EditGoods[ 'Number' ] != 0)
+                {
+                    $Response[ 'JarGoods' ][ $Size ][ 'Id' ] = $data[ 'Id' ];
+                    $Response[ 'JarGoods' ][ $Size ][ 'Name' ] = $data[ 'Name' ];
+                    $Response[ 'JarGoods' ][ $Size ][ 'Price' ] = $data[ 'Price' ];
+                    $Response[ 'JarGoods' ][ $Size ][ 'Number' ] = $request->EditGoods[ 'Number' ];
+                }
             }
-            $Response[$Size]['Image'] = $data->GoodsImage;
+//            $Response[ $Size ][ 'Image' ] = $data['Image'];
 
         }
+        $Response[ 'Success' ] = "true";
+
         return $Response;
 
     }
 
-    public function DeleteJar(Request $request)
+    public function DeleteJar (Request $request)
     {
-        Goods::where('GoodsId','=',$request->DeleteGoods->Id)->increment('GoodsNumber',$request->DeleteGoods->GoodsNumber);
         foreach ($request->JarGoods as $data)
         {
-            if(empty($Response))
+            if (empty($Response))
             {
-                $Size=0;
+                $Size = 0;
             }
             else
             {
                 $Size = sizeof($Response);
             }
-            if($request->jarGoods->Id != $request->DeleteGoods->Id)
+            Debugbar::info($request->DeleteGoods[ 'Id' ]);
+            Debugbar::info($request->JarGoods);
+            if ($data[ 'Id' ] != $request->DeleteGoods[ 'Id' ])
             {
-                $Response[$Size]['Id'] = $data->GoodsId;
-                $Response[$Size]['Name'] = $data->GoodsName;
-                $Response[$Size]['Price'] = $data->GoodsPrice;
-                $Response[$Size]['Discount'] = $data->GoodsDiscount;
-                $Response[$Size]['Number'] = $data->GoodsNumber;
-                $Response[$Size]['Image'] = $data->GoodsImage;
+                $Response[ 'JarGoods' ][ $Size ][ 'Id' ] = $data[ 'Id' ];
+                $Response[ 'JarGoods' ][ $Size ][ 'Name' ] = $data[ 'Name' ];
+                $Response[ 'JarGoods' ][ $Size ][ 'Price' ] = $data[ 'Price' ];
+//                $Response['JarGoods'][ $Size ][ 'Discount' ] = $data['Discount'];
+                $Response[ 'JarGoods' ][ $Size ][ 'Number' ] = $data[ 'Number' ];
+//                $Response['JarGoods'][ $Size ][ 'Image' ] = $data['Image'];
+            }
+            if ($data[ 'Id' ] = $request->DeleteGoods[ 'Id' ])
+            {
+                $number = $data[ 'Number' ];
             }
         }
-        return $Response;
+        $Response[ 'Success' ] = "true";
+        Goods::where('GoodsId', '=', $request->DeleteGoods[ 'Id' ])->increment('GoodsNumber', $number);
+        if (empty($Response))
+        {
+            $Response[ 'JarGoods' ] = '';
+        }
+        else
+        {
+            return $Response;
+        }
     }
 
     public function MakeBill (Request $request)
@@ -226,64 +259,109 @@ class StoreController extends Controller
         session('ExtendScreen', $data);
 
     }
-    public function AddToJar(Request $request)
+
+    public function AddToJar (Request $request)
     {
+
+
+        Debugbar::info($request->all());
         $this->validate($request, [
-            'Barcode'=>'nullable|max:50|string',
-            'Price' => 'nullable|max:99999999999999999999|integer',
-            'Name'=>'nullable|max:50|string',
-            'Number'=>'nullable|max:99999999999999999999|integer',
-            'Discount'=>'nullable|max:100|integer'
+            'Barcode'  => 'nullable|max:50|string',
+            'Price'    => 'nullable|max:99999999999999999999|integer',
+            'Name'     => 'nullable|max:50|string',
+            'Number'   => 'nullable|max:99999999999999999999|integer',
+            'Discount' => 'nullable|max:100|integer',
         ]);
-        if(!empty($request->NewGoods->Id))//TODO:Add goods buy select
+        if (empty($request->FactorCode))
         {
-            $GoodsNumber = Goods::where('GoodsId', '=', $request->NewGoods->Id)->value('GoodsNumber');
-            $GoodsName=$request->NewGoods->Name;
-            $GoodsPrice=$request->NewGood->Price;
-            $GoodsId=$request->NewGoods->Id;
+            $FactorCode=$this->MakeFactor();
+        }
+        if (!empty($request->NewGoods[ 'Id' ]))//TODO:Add goods buy select
+        {
+
+            $final = Goods::where('GoodsId', '=', $request->NewGoods[ 'Id' ])->select( 'GoodsNumber', 'GoodsName', 'GoodsNumber', 'GoodsPrice','GoodsDiscount')->first();
+            if (empty($final))
+            {
+                return $Response[ 'Success' ] = 'False';
+            }
+            $GoodsId = $request->NewGoods['GoodsId'];
+            $GoodsName = $final->GoodsName;
+            $GoodsNumber = $final->GoodsNumber;
+            $GoodsPrice = $final->GoodsPrice;
+            $GoodsDiscount = $final->GoodsDiscount;
+
 
         }
-        if(!empty($request->NewGoods->Barcode))//TODO:Add goods buy barcode
+        if (!empty($request->NewGoods[ 'Barcode' ]))//TODO:Add goods buy barcode
         {
-            $final= Goods::where('GoodsBarcode','=',$request->NewGoods->Barcode)->select('GoodsId','GoodsNumber','GoodsName','GoodsNumber','GoodsPrice')->get();
-            $GoodsId=$final->GoodsId;
-            $GoodsName=$final->GoodsName;
-            $GoodsNumber=$final->GoodsNumber;
-            $GoodsPrice=$final->GoodsPrice;
-        }
-        if ($GoodsNumber==-1 || $GoodsNumber>=1)
-        {
-            if(!empty($request->JarGoods))
+            $final = Goods::where('GoodsBarcode', '=', $request->NewGoods[ 'Barcode' ])->select('GoodsId', 'GoodsNumber', 'GoodsName', 'GoodsNumber', 'GoodsPrice','GoodsDiscount')->first();
+            if (empty($final))
             {
-                foreach ($request->JarGoods as $Goods)//TODO:when goods is available in jar
+                return $Response[ 'Success' ] = 'False';
+            }
+            $GoodsId = $final->GoodsId;
+            $GoodsName = $final->GoodsName;
+            $GoodsNumber = $final->GoodsNumber;
+            $GoodsPrice = $final->GoodsPrice;
+            $GoodsDiscount = $final->GoodsDiscount;
+
+        }
+
+        if ($GoodsNumber == -1 || $GoodsNumber >= 1)
+        {
+
+//            Debugbar::info($request->JarGoods);
+            if (!empty($request->JarGoods))
+            {
+
+                $data[ 'JarGoods' ] = $request->JarGoods;
+//                Debugbar::info($request->JarGoods);
+                for ($i = 0; $i < sizeof($data[ 'JarGoods' ]); $i++)//TODO:when goods is available in jar
                 {
-                    if ($Goods->Id == $GoodsId)
+
+                    if ($data[ 'JarGoods' ][ $i ][ 'Id' ] == $GoodsId)
                     {
-                        $Goods->Number ++;
-                        Goods::where('GoodsId','=',$GoodsId)->decrement('GoodsNumber');
-                        $request->success=true;
-                        $request->NewGoods="";
-                        return $request;
+                        $data[ 'JarGoods' ][ $i ][ 'Number' ] += 1;
+                        Debugbar::info($data[ 'JarGoods' ][ $i ][ 'Number' ]);
+//                        Goods::where('GoodsId', '=', $GoodsId)->decrement('GoodsNumber');
+                        $GoodsData['GoodsPrice']=$GoodsPrice;
+                        $GoodsData['GoodsNum']=$GoodsNumber;
+//                        $GoodsData['GoodsTax']=$GoodsTax;
+                        $GoodsData['GoodsDiscount']=$GoodsDiscount;
+                        $GoodsData['GoodsId']=$GoodsId;
+                        $GoodsData['FactorId']=$request->FactorId;
+                        new AddEvent($GoodsData);
+                        $data[ 'Success' ] = TRUE;
+                        $data[ 'JarGoods' ][ $i ][ 'NewGoods' ] = "";
+
+                        return $data;
                     }
                 }
             }
-            $data=$request;   //TODO:when Goods is a new Goods
-            $data=json_decode($data);
-            $size=sizeof($data);
-            $data['NewGoods']['Id']=$GoodsId;
-            $data['NewGoods']['Name']=$GoodsName;
-            $data['NewGoods']['Price']=$GoodsPrice;
-            $data['NewGoods']['Number']=1;
-            $data['Success']=true;
-            Goods::where('GoodsId','=',$GoodsId)->decrement('GoodsNumber',$data[$size]['Number']);
+            $data[ 'NewGoods' ][ 'Id' ] = $GoodsId;
+            $data[ 'NewGoods' ][ 'Name' ] = $GoodsName;
+            $data[ 'NewGoods' ][ 'Price' ] = $GoodsPrice;
+            $data[ 'NewGoods' ][ 'Number' ] = 1;
+            $data[ 'Success' ] = TRUE;
+            Debugbar::info($data);
+//            Goods::where('GoodsId', '=', $GoodsId)->decrement('GoodsNumber', $data[ 'NewGoods' ][ 'Number' ]);
+            $GoodsData['GoodsPrice']=$GoodsPrice;
+            $GoodsData['GoodsNum']=$GoodsNumber;
+//            $GoodsData['GoodsTax']=$GoodsTax;
+            $GoodsData['GoodsDiscount']=$GoodsDiscount;
+            $GoodsData['GoodsId']=$GoodsId;
+            $GoodsData['FactorId']=$request->FactorId;
+            new AddEvent($GoodsData);
+            $data[ 'Success' ] = TRUE;
+
 //            $this->CustomerScreen($data);
-            return json_encode($data);
+            return $data;
 
         }
 
         else
         {
-            return json_encode($data['Success']=false);
+            return $data[ 'Success' ] = "false";
         }
     }
 }
